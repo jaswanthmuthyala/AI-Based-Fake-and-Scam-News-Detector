@@ -1,0 +1,178 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+:root {
+  --background: #F3F5F9;
+  --surface: #FFFFFF;
+  --surface-elevated: #FAF8F4;
+  --input-background: #FFFFFF;
+  --text-primary: #14213D;
+  --text-secondary: #596579;
+  --text-muted: #687386;
+  --border: #E1E6EF;
+  --accent: #A77C20;
+  
+  --button-background: #14213D;
+  --button-text: #FFFFFF;
+  --button-disabled-bg: #E1E6EF;
+  --button-disabled-text: #A0AABF;
+
+  --sidebar-bg: #101A2D;
+  
+  --safe: #2F7D5B;
+  --suspicious: #C98A1B;
+  --dangerous: #A63A3A;
+  --muted-blue: #38558C;
+}
+
+/* Dark Mode Palette */
+.dark {
+  --background: #0D1525;
+  --surface: #14213D;
+  --surface-elevated: #1B2942;
+  --input-background: #101A2D;
+  --text-primary: #F5F7FA;
+  --text-secondary: #C1CBDA;
+  --text-muted: #AAB6C8;
+  --border: #34425A;
+  --accent: #C9A24B;
+  
+  --button-background: #C9A24B;
+  --button-text: #14213D;
+  --button-disabled-bg: #1B2942;
+  --button-disabled-text: #D1D7E2;
+
+  --sidebar-bg: #101A2D;
+  --muted-blue: #6C8EBF;
+}
+
+@layer base {
+  body {
+    @apply font-sans antialiased overflow-x-hidden transition-colors duration-500;
+    background-color: var(--background);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight transition-colors duration-500;
+    color: var(--text-primary);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply font-bold py-3 px-8 rounded-xl transition-all duration-300 shadow-classic hover:shadow-classic-hover hover:-translate-y-0.5 border border-transparent;
+    background-color: var(--button-background);
+    color: var(--button-text);
+  }
+  .btn-primary:disabled {
+    background-color: var(--button-disabled-bg);
+    color: var(--button-disabled-text);
+    box-shadow: none;
+    transform: none;
+    cursor: not-allowed;
+    border-color: var(--border);
+  }
+  
+  .btn-secondary {
+    @apply font-bold py-3 px-8 rounded-xl transition-all duration-300 hover:shadow-md;
+    background-color: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+  .btn-secondary:disabled {
+    color: var(--button-disabled-text);
+    background-color: var(--button-disabled-bg);
+    border-color: var(--border);
+    cursor: not-allowed;
+  }
+  
+  .classic-card {
+    @apply rounded-[16px] shadow-classic p-6 md:p-8 transition-all duration-300;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .input-classic {
+    @apply w-full rounded-xl px-4 py-3 focus:outline-none focus:ring-1 transition-all;
+    background-color: var(--input-background);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+  .input-classic:focus {
+    border-color: var(--accent);
+    --tw-ring-color: var(--accent);
+  }
+  .input-classic::placeholder {
+    color: var(--text-muted);
+  }
+}
+
+/* Background Systems */
+.bg-grid-architectural {
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgba(20, 33, 61, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(20, 33, 61, 0.03) 1px, transparent 1px);
+}
+
+.dark .bg-grid-architectural {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+@media print {
+  /* Hide unnecessary UI elements */
+  nav, header, button, .sidebar, .no-print {
+    display: none !important;
+  }
+  
+  /* Reset background and colors for printing */
+  body, .bg-classic-background, .bg-classic-surface, .bg-classic-surfaceElevated {
+    background: white !important;
+    color: black !important;
+  }
+  
+  /* Ensure main content takes full width */
+  main, .container, .max-w-7xl {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  /* Page breaks */
+  .page-break-before {
+    page-break-before: always;
+  }
+  .page-break-inside-avoid {
+    page-break-inside: avoid;
+  }
+  
+  /* Typography for print */
+  * {
+    font-size: 11pt !important;
+  }
+  h1 { font-size: 18pt !important; font-weight: bold !important; margin-bottom: 10px !important; }
+  h2 { font-size: 14pt !important; font-weight: bold !important; margin-top: 15px !important; margin-bottom: 5px !important; }
+  h3 { font-size: 12pt !important; font-weight: bold !important; }
+  
+  /* Avoid shadows and borders */
+  .shadow-sm, .shadow-md, .shadow-xl, .shadow-2xl {
+    box-shadow: none !important;
+  }
+  .border {
+    border: 1px solid #ccc !important;
+  }
+}
