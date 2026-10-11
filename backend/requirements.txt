@@ -1,10 +1,15 @@
 fastapi
 uvicorn
 pydantic
+email-validator
 scikit-learn
+pandas
+numpy
 sqlalchemy
 joblib
 python-dotenv
+pyjwt
+bcrypt
+python-multipart
 pytest
 httpx
-python-multipart
