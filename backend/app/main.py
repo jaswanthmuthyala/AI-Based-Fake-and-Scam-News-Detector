@@ -56,6 +56,10 @@ RATE_LIMIT_WINDOW = 60
 
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
+    # Allow browser CORS preflight requests through
+    if request.method == "OPTIONS":
+        return await call_next(request)
+
     client_ip = request.client.host if request.client else "unknown"
     current_time = time.time()
 
