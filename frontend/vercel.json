@@ -2,8 +2,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://ai-based-fake-and-scam-news-detector.onrender.com/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://ai-based-fake-and-scam-news-detector.onrender.com/api/:path*"
     },
     {
       "source": "/((?!assets/).*)",
