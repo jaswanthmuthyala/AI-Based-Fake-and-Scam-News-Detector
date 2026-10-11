@@ -1,5 +1,10 @@
+
 {
   "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://ai-based-fake-and-scam-news-detector.onrender.com/api/$1"
+    },
     {
       "source": "/((?!assets/).*)",
       "destination": "/index.html"
