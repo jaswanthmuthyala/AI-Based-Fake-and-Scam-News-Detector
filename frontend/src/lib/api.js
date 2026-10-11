@@ -2,9 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.PROD
-    ? ''
-    : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'),
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
   withCredentials: true,
 });
 
@@ -13,7 +11,8 @@ api.interceptors.response.use(
   (error) => {
     if (!error.response) {
       error.isNetworkError = true;
-      error.friendlyMessage = 'Backend unavailable. Please verify connection.';
+      error.friendlyMessage =
+        'Backend unavailable. Please verify connection.';
       return Promise.reject(error);
     }
 
