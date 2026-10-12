@@ -20,15 +20,11 @@ api.interceptors.response.use(
 
     const detail = error.response.data?.detail;
 
-    if (detail) {
-      error.friendlyMessage =
-        typeof detail === 'string'
+    error.friendlyMessage = detail
+      ? (typeof detail === 'string'
           ? detail
-          : 'An unexpected error occurred.';
-    } else {
-      error.friendlyMessage =
-        `Server responded with status ${error.response.status}`;
-    }
+          : 'An unexpected error occurred.')
+      : `Server responded with status ${error.response.status}`;
 
     if (error.response.status === 401) {
       window.dispatchEvent(new CustomEvent('auth:unauthorized'));
