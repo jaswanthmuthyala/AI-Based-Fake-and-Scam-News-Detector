@@ -4,7 +4,56 @@ import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, CartesianGri
 import { Search, Loader2, ShieldAlert, AlertTriangle, Activity, TrendingUp, Calendar, ScanSearch, Gauge, TriangleAlert, Brain, ArrowRight } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '../lib/utils'
-import { useNavigate } from 'react-router-dom'
+const CardHeader = ({ title, subtitle }) => (
+  <div className="mb-6">
+    <h3 className="text-[15px] font-bold text-classic-navy">{title}</h3>
+    {subtitle && <p className="text-xs text-classic-muted font-medium mt-1">{subtitle}</p>}
+  </div>
+)
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    const color = data.score >= 70 ? '#2F7D5B' : data.score >= 40 ? '#C98A1B' : '#A63A3A';
+    let interpretation = 'High trust score';
+    if (data.score < 40) interpretation = 'Low trust score';
+    else if (data.score < 70) interpretation = 'Moderate trust score';
+    
+    return (
+      <div className="bg-classic-surface p-4 rounded-xl border border-classic-border shadow-md min-w-[180px]">
+        <div className="text-[9px] font-bold uppercase tracking-widest text-classic-muted mb-2 border-b border-classic-border pb-2">Scan Details</div>
+        <div className="text-xs text-classic-navy font-bold mb-3">{data.name}</div>
+        
+        <div className="mb-2">
+          <div className="text-[10px] uppercase text-classic-muted font-semibold mb-0.5">Trust Score</div>
+          <div className="text-lg font-display font-bold text-classic-navy">{data.score} <span className="text-[10px] font-sans text-classic-muted">/ 100</span></div>
+        </div>
+        
+        <div className="mb-2">
+          <div className="text-[10px] uppercase text-classic-muted font-semibold mb-0.5">Verdict</div>
+          <div className="text-xs font-bold" style={{ color }}>{data.verdict}</div>
+        </div>
+
+        <div>
+          <div className="text-[10px] uppercase text-classic-muted font-semibold mb-0.5">Interpretation</div>
+          <div className="text-xs font-medium text-classic-charcoal">{interpretation}</div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+const EmptyState = () => (
+  <div className="flex flex-col items-center justify-center py-32 px-4 text-center">
+    <div className="w-24 h-24 mb-8 bg-classic-surfaceElevated rounded-full flex items-center justify-center text-classic-navy">
+      <Activity size={32} />
+    </div>
+    <h2 className="text-3xl font-display font-bold text-classic-navy mb-4">No scans yet</h2>
+    <p className="text-classic-charcoal max-w-sm mx-auto mb-10 font-medium">Analyze your first message to start building your Trust Intelligence Dashboard.</p>
+    <a href="/" className="btn-primary inline-flex items-center gap-2"><Search size={18}/> Analyze Content</a>
+  </div>
+)
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
@@ -76,58 +125,7 @@ export default function Dashboard() {
   const lowestScore = validScores.length ? Math.min(...validScores) : null
   const latestScan = trendData.length ? trendData[trendData.length - 1] : null
 
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      const color = data.score >= 70 ? '#2F7D5B' : data.score >= 40 ? '#C98A1B' : '#A63A3A';
-      let interpretation = 'High trust score';
-      if (data.score < 40) interpretation = 'Low trust score';
-      else if (data.score < 70) interpretation = 'Moderate trust score';
-      
-      return (
-        <div className="bg-classic-surface p-4 rounded-xl border border-classic-border shadow-md min-w-[180px]">
-          <div className="text-[9px] font-bold uppercase tracking-widest text-classic-muted mb-2 border-b border-classic-border pb-2">Scan Details</div>
-          <div className="text-xs text-classic-navy font-bold mb-3">{data.name}</div>
-          
-          <div className="mb-2">
-            <div className="text-[10px] uppercase text-classic-muted font-semibold mb-0.5">Trust Score</div>
-            <div className="text-lg font-display font-bold text-classic-navy">{data.score} <span className="text-[10px] font-sans text-classic-muted">/ 100</span></div>
-          </div>
-          
-          <div className="mb-2">
-            <div className="text-[10px] uppercase text-classic-muted font-semibold mb-0.5">Verdict</div>
-            <div className="text-xs font-bold" style={{ color }}>{data.verdict}</div>
-          </div>
-
-          <div>
-            <div className="text-[10px] uppercase text-classic-muted font-semibold mb-0.5">Interpretation</div>
-            <div className="text-xs font-medium text-classic-charcoal">{interpretation}</div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   const filteredHistory = filter === 'All' ? history : history.filter(h => h.verdict === filter)
-
-  const EmptyState = () => (
-    <div className="flex flex-col items-center justify-center py-32 px-4 text-center">
-      <div className="w-24 h-24 mb-8 bg-classic-surfaceElevated rounded-full flex items-center justify-center text-classic-navy">
-        <Activity size={32} />
-      </div>
-      <h2 className="text-3xl font-display font-bold text-classic-navy mb-4">No scans yet</h2>
-      <p className="text-classic-charcoal max-w-sm mx-auto mb-10 font-medium">Analyze your first message to start building your Trust Intelligence Dashboard.</p>
-      <a href="/" className="btn-primary inline-flex items-center gap-2"><Search size={18}/> Analyze Content</a>
-    </div>
-  )
-
-  const CardHeader = ({ title, subtitle }) => (
-    <div className="mb-6">
-      <h3 className="text-[15px] font-bold text-classic-navy">{title}</h3>
-      {subtitle && <p className="text-xs text-classic-muted font-medium mt-1">{subtitle}</p>}
-    </div>
-  )
 
   const getVerdictColor = (score) => {
     if (score >= 70) return '#2F7D5B'

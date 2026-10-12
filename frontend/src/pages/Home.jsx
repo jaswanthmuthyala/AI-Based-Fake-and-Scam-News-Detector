@@ -90,7 +90,7 @@ export default function Home() {
       const data = response.data
       
       // Basic response validation
-      if (!data || !data.trust_score === undefined || !data.verdict) {
+      if (!data || data.trust_score === undefined || !data.verdict) {
         throw new Error('Invalid response received from the analysis engine.')
       }
 

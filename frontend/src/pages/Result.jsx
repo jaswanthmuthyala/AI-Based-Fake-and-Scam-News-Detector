@@ -13,11 +13,6 @@ export default function Result() {
   const [copied, setCopied] = useState(false)
   const [toastMsg, setToastMsg] = useState('')
   const [isExporting, setIsExporting] = useState(false)
-  
-  if (!result) return <Navigate to="/" replace />
-
-  const { trust_score, verdict, category, original_text, highlights, explanation, advice, breakdown, secondary_categories = [], claims_requiring_verification = [], verification_status = '' } = result
-
   const toastTimeoutRef = useRef(null)
   
   useEffect(() => {
@@ -25,6 +20,11 @@ export default function Result() {
       if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current)
     }
   }, [])
+  
+  if (!result) return <Navigate to="/" replace />
+
+  const { trust_score, verdict, category, original_text, highlights, explanation, advice, breakdown, secondary_categories = [], claims_requiring_verification = [], verification_status = '' } = result
+
 
   const showToast = (msg) => {
     setToastMsg(msg)

@@ -18,6 +18,7 @@ class EngineBreakdownItem(BaseModel):
     score: int
     contribution: float
     reason: Optional[str] = None
+    analyses: Optional[List[Dict[str, Any]]] = None
 
 class EngineBreakdown(BaseModel):
     rules: EngineBreakdownItem
